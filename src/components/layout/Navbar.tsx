@@ -12,6 +12,8 @@ import {
   LogOut,
 } from 'lucide-react';
 
+import { BrandLogo } from '../common/BrandLogo';
+
 export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = () => {
   const {
     user,
@@ -34,29 +36,14 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = () => {
   const pendingAlertsCount = (duplicateAlert ? 1 : 0) + expiringWarrantiesCount;
 
   return (
-    <header className="sticky top-0 z-30 flex items-center justify-between h-16 px-4 md:px-6 bg-white/85 dark:bg-slate-900/85 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
+    <header className="sticky top-0 z-30 flex items-center justify-between h-16 px-4 md:px-6 bg-white/90 dark:bg-slate-900/90 backdrop-blur-md border-b border-slate-200/80 dark:border-slate-800 transition-colors">
       {/* Brand title on mobile / search on desktop */}
       <div className="flex items-center gap-3">
         <div
           onClick={() => setActivePage('dashboard')}
           className="flex items-center gap-2.5 cursor-pointer group"
         >
-          <div className="flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-tr from-sky-600 via-cyan-600 to-teal-500 text-white shadow-md shadow-sky-500/20 group-hover:scale-105 transition-transform">
-            <ShieldCheck className="w-6 h-6" />
-          </div>
-          <div>
-            <div className="flex items-center gap-1.5">
-              <span className="font-bold text-lg tracking-tight text-slate-900 dark:text-white">
-                Receipt <span className="text-sky-600 dark:text-sky-400">Radar</span>
-              </span>
-              <span className="hidden sm:inline-block text-[10px] font-semibold uppercase tracking-wider px-1.5 py-0.5 rounded bg-sky-100 text-sky-700 dark:bg-sky-950/80 dark:text-sky-300 border border-sky-200 dark:border-sky-800">
-                PRO
-              </span>
-            </div>
-            <p className="hidden md:block text-[11px] text-slate-500 dark:text-slate-400 font-medium">
-              Secure Financial Intelligence & Warranty Vault
-            </p>
-          </div>
+          <BrandLogo size="md" showTagline={true} />
         </div>
       </div>
 

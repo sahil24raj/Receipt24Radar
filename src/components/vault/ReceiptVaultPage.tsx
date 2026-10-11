@@ -22,6 +22,7 @@ import {
   UploadCloud,
   X,
   FileSpreadsheet,
+  PlusCircle,
 } from 'lucide-react';
 import { Receipt, ExpenseCategory, WarrantyStatus, ReturnStatus, PaymentMethod } from '../../types';
 
@@ -32,6 +33,7 @@ export const ReceiptVaultPage: React.FC = () => {
     bulkDeleteReceipts,
     setSelectedReceiptForDetail,
     setActivePage,
+    setIsManualModalOpen,
     showToast,
   } = useApp();
 
@@ -237,7 +239,7 @@ export const ReceiptVaultPage: React.FC = () => {
           </p>
         </div>
 
-        <div className="flex items-center gap-2.5">
+        <div className="flex items-center gap-2 sm:gap-2.5 flex-wrap">
           <button
             onClick={handleExportCSV}
             className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 shadow-xs transition-all"
@@ -248,11 +250,20 @@ export const ReceiptVaultPage: React.FC = () => {
           </button>
 
           <button
+            onClick={() => setIsManualModalOpen(true)}
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 shadow-xs transition-all"
+            title="Add Receipt Manually without OCR scanning"
+          >
+            <PlusCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
+            <span>+ Add Manually</span>
+          </button>
+
+          <button
             onClick={() => setActivePage('upload')}
             className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 shadow-md shadow-sky-500/20 active:scale-95 transition-all"
           >
             <UploadCloud className="w-4 h-4" />
-            <span>Upload Receipt</span>
+            <span>Scan Receipt</span>
           </button>
         </div>
       </div>
@@ -515,7 +526,7 @@ export const ReceiptVaultPage: React.FC = () => {
           <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 max-w-sm mx-auto">
             Try adjusting your search query, clearing filters, or upload a new purchase receipt to your vault.
           </p>
-          <div className="mt-5 flex items-center justify-center gap-3">
+          <div className="mt-5 flex items-center justify-center gap-3 flex-wrap">
             {hasActiveFilters && (
               <button
                 onClick={clearAllFilters}
@@ -525,10 +536,17 @@ export const ReceiptVaultPage: React.FC = () => {
               </button>
             )}
             <button
-              onClick={() => setActivePage('upload')}
-              className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-500 shadow-sm"
+              onClick={() => setIsManualModalOpen(true)}
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1.5 shadow-xs transition-colors"
             >
-              Upload Your First Receipt
+              <PlusCircle className="w-3.5 h-3.5 text-emerald-600 dark:text-emerald-400" />
+              <span>Add Manually</span>
+            </button>
+            <button
+              onClick={() => setActivePage('upload')}
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-500 shadow-sm transition-colors"
+            >
+              Upload & Scan Receipt
             </button>
           </div>
         </div>

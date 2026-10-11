@@ -23,11 +23,12 @@ import {
   ShieldCheck,
   Hash,
   HelpCircle,
+  PlusCircle,
 } from 'lucide-react';
 import { ExpenseCategory, PaymentMethod, ReceiptLineItem } from '../../types';
 
 export const UploadOCRPage: React.FC = () => {
-  const { addReceipt, setActivePage, setSelectedReceiptForDetail } = useApp();
+  const { addReceipt, setActivePage, setSelectedReceiptForDetail, setIsManualModalOpen } = useApp();
 
   // File state
   const [selectedFile, setSelectedFile] = useState<{
@@ -263,6 +264,56 @@ export const UploadOCRPage: React.FC = () => {
 
 
 
+      {/* Dual-Mode Selector: AI OCR Scan vs 15-Sec Direct Manual Entry */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-3.5">
+        <div className="p-4 rounded-2xl bg-sky-50/70 dark:bg-sky-950/30 border-2 border-sky-500/50 dark:border-sky-500/40 flex items-center justify-between shadow-xs">
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-sky-600 text-white flex items-center justify-center shrink-0 shadow-sm shadow-sky-600/30">
+              <UploadCloud className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Smart OCR Scanner</h3>
+                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-sky-200 text-sky-800 dark:bg-sky-900 dark:text-sky-200 font-mono">
+                  AI
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Extracts merchant, items, GST & totals automatically
+              </p>
+            </div>
+          </div>
+          <span className="text-xs font-bold text-sky-600 dark:text-sky-400 hidden lg:inline">
+            Active
+          </span>
+        </div>
+
+        <div
+          onClick={() => setIsManualModalOpen(true)}
+          className="p-4 rounded-2xl bg-white dark:bg-slate-900 border border-slate-200/80 dark:border-slate-800 hover:border-emerald-500/60 hover:bg-emerald-50/30 dark:hover:bg-emerald-950/20 cursor-pointer transition-all flex items-center justify-between group shadow-xs"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-10 h-10 rounded-xl bg-emerald-50 dark:bg-emerald-950 text-emerald-600 dark:text-emerald-400 border border-emerald-200 dark:border-emerald-800 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <PlusCircle className="w-5 h-5" />
+            </div>
+            <div>
+              <div className="flex items-center gap-1.5">
+                <h3 className="text-sm font-bold text-slate-900 dark:text-white">Quick Manual Entry</h3>
+                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-950 dark:text-emerald-300 border border-emerald-300 dark:border-emerald-800 font-mono">
+                  15 SEC
+                </span>
+              </div>
+              <p className="text-xs text-slate-500 dark:text-slate-400">
+                Direct entry for paper, faded, or handwritten receipts
+              </p>
+            </div>
+          </div>
+          <span className="text-xs font-bold text-emerald-600 dark:text-emerald-400 group-hover:translate-x-0.5 transition-transform flex items-center gap-1">
+            Open <ArrowRight className="w-3.5 h-3.5" />
+          </span>
+        </div>
+      </div>
+
       {/* Drag & Drop Upload Zone */}
       {!extractedData && !isProcessing && (
         <div
@@ -302,19 +353,52 @@ export const UploadOCRPage: React.FC = () => {
             Supports <strong className="text-slate-700 dark:text-slate-300">JPG, JPEG, PNG, PDF</strong> documents up to 10 MB.
           </p>
 
-          <div className="mt-5 flex items-center justify-center gap-2">
+          <div className="mt-5 flex items-center justify-center gap-3 flex-wrap">
             <button
               type="button"
               className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-sky-600 hover:bg-sky-500 shadow-sm"
             >
               Browse Files
             </button>
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation();
+                setIsManualModalOpen(true);
+              }}
+              className="px-4 py-2 rounded-xl text-xs font-semibold text-slate-700 dark:text-slate-200 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 flex items-center gap-1.5 transition-colors"
+            >
+              <PlusCircle className="w-3.5 h-3.5 text-emerald-500" />
+              <span>Or Enter Manually</span>
+            </button>
           </div>
 
+          {/* OCR Error / Low Clarity Recovery Card */}
           {fileError && (
-            <p className="mt-4 text-xs font-semibold text-rose-600 dark:text-rose-400">
-              {fileError}
-            </p>
+            <div
+              onClick={(e) => e.stopPropagation()}
+              className="mt-6 p-4 rounded-2xl bg-rose-50 dark:bg-rose-950/40 border border-rose-200 dark:border-rose-900 text-left flex flex-col sm:flex-row sm:items-center justify-between gap-3 animate-in fade-in"
+            >
+              <div className="flex items-start gap-3">
+                <AlertTriangle className="w-5 h-5 text-rose-600 dark:text-rose-400 shrink-0 mt-0.5" />
+                <div>
+                  <p className="text-xs font-bold text-rose-900 dark:text-rose-200">
+                    {fileError}
+                  </p>
+                  <p className="text-[11px] text-rose-700 dark:text-rose-400 mt-0.5">
+                    Blurry image, faded ink, or non-standard invoice? Don't worry — switch directly to Manual Receipt Entry in 15 seconds.
+                  </p>
+                </div>
+              </div>
+              <button
+                type="button"
+                onClick={() => setIsManualModalOpen(true)}
+                className="px-3.5 py-2 rounded-xl text-xs font-bold text-white bg-rose-600 hover:bg-rose-500 shrink-0 shadow-xs flex items-center gap-1.5 transition-colors"
+              >
+                <PlusCircle className="w-4 h-4" />
+                <span>Switch to Manual Entry</span>
+              </button>
+            </div>
           )}
 
           {/* Staged File Preview Ready CTA */}
@@ -335,13 +419,23 @@ export const UploadOCRPage: React.FC = () => {
                 </div>
               </div>
 
-              <button
-                type="button"
-                onClick={() => startOCRProcessing()}
-                className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-500 hover:to-teal-500 shrink-0 shadow-sm"
-              >
-                Scan with OCR
-              </button>
+              <div className="flex items-center gap-2 shrink-0">
+                <button
+                  type="button"
+                  onClick={() => setIsManualModalOpen(true)}
+                  className="px-3 py-2 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors"
+                  title="Add details manually for this receipt"
+                >
+                  Manual
+                </button>
+                <button
+                  type="button"
+                  onClick={() => startOCRProcessing()}
+                  className="px-4 py-2 rounded-xl text-xs font-semibold text-white bg-gradient-to-r from-sky-600 to-teal-600 hover:from-sky-500 hover:to-teal-500 shadow-sm transition-all"
+                >
+                  Scan with OCR
+                </button>
+              </div>
             </div>
           )}
         </div>
@@ -401,6 +495,22 @@ export const UploadOCRPage: React.FC = () => {
               );
             })}
           </div>
+
+          {/* Fallback to Manual button during processing */}
+          <div className="mt-6 pt-4 border-t border-slate-100 dark:border-slate-800 text-xs text-slate-500 dark:text-slate-400">
+            <span>OCR taking too long or want to bypass scanning? </span>
+            <button
+              type="button"
+              onClick={() => {
+                setIsProcessing(false);
+                setIsManualModalOpen(true);
+              }}
+              className="text-sky-600 dark:text-sky-400 font-bold hover:underline inline-flex items-center gap-1 ml-1"
+            >
+              <span>Cancel & Enter Manually</span>
+              <ArrowRight className="w-3 h-3" />
+            </button>
+          </div>
         </div>
       )}
 
@@ -423,7 +533,19 @@ export const UploadOCRPage: React.FC = () => {
               </div>
             </div>
 
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2 flex-wrap">
+              <button
+                type="button"
+                onClick={() => {
+                  setExtractedData(null);
+                  setIsManualModalOpen(true);
+                }}
+                className="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-colors flex items-center gap-1"
+                title="Discard OCR values and fill details manually"
+              >
+                <PlusCircle className="w-3.5 h-3.5 text-emerald-500" />
+                <span>Enter Manually</span>
+              </button>
               <button
                 onClick={() => setExtractedData(null)}
                 className="px-3 py-1.5 rounded-xl text-xs font-semibold text-slate-600 dark:text-slate-300 hover:bg-slate-200/50 dark:hover:bg-slate-800 transition-colors"

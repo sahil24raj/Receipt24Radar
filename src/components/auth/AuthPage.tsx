@@ -14,6 +14,7 @@ import {
   FileCheck2,
   Database,
 } from 'lucide-react';
+import { BrandLogo } from '../common/BrandLogo';
 
 export const AuthPage: React.FC = () => {
   const { login, register, demoLogin, loginWithGoogle, isSupabaseConnected, setIsSupabaseModalOpen } = useApp();
@@ -113,15 +114,10 @@ export const AuthPage: React.FC = () => {
     <div className="min-h-screen flex flex-col justify-center items-center py-12 px-4 sm:px-6 lg:px-8 bg-slate-50 dark:bg-slate-950 transition-colors">
       <div className="w-full max-w-md">
         {/* Brand Header */}
-        <div className="text-center mb-8">
-          <div className="inline-flex items-center justify-center w-14 h-14 rounded-2xl bg-gradient-to-tr from-sky-600 via-cyan-600 to-teal-500 text-white shadow-xl shadow-sky-500/25 mb-4 animate-in zoom-in-95 duration-300">
-            <ShieldCheck className="w-8 h-8" />
-          </div>
-          <h1 className="text-2xl sm:text-3xl font-extrabold tracking-tight text-slate-900 dark:text-white">
-            Receipt <span className="text-sky-600 dark:text-sky-400">Radar</span>
-          </h1>
-          <p className="mt-1 text-sm text-slate-500 dark:text-slate-400">
-            Secure Smart Receipt Management & Expense Intelligence
+        <div className="flex flex-col items-center justify-center text-center mb-8">
+          <BrandLogo size="lg" showTagline={true} variant="full" className="justify-center mb-2" />
+          <p className="mt-1 text-xs text-slate-500 dark:text-slate-400 font-medium max-w-xs text-center">
+            Zero-Knowledge Cryptographic Expense Vault & Smart Warranty Intelligence
           </p>
         </div>
 

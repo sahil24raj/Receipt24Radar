@@ -672,26 +672,53 @@ export const DashboardPage: React.FC = () => {
           </button>
         </div>
 
-        {/* Responsive Table */}
-        <div className="overflow-x-auto -mx-5 sm:mx-0">
-          <table className="w-full text-left border-collapse text-xs">
-            <thead>
-              <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-wider">
-                <th className="py-3 px-4">Merchant</th>
-                <th className="py-3 px-4">Category</th>
-                <th className="py-3 px-4">Date</th>
-                <th className="py-3 px-4">Amount</th>
-                <th className="py-3 px-4">Status</th>
-                <th className="py-3 px-4 text-right">Actions</th>
-              </tr>
-            </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
-              {recentReceipts.map((rcpt) => (
-                <tr
-                  key={rcpt.id}
-                  className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors group cursor-pointer"
-                  onClick={() => setSelectedReceiptForDetail(rcpt)}
-                >
+        {/* Responsive Table or Empty State */}
+        {recentReceipts.length === 0 ? (
+          <div className="py-10 text-center rounded-xl bg-slate-50/50 dark:bg-slate-800/30 border border-slate-100 dark:border-slate-800">
+            <ReceiptIcon className="w-10 h-10 text-slate-300 dark:text-slate-600 mx-auto mb-2" />
+            <h3 className="text-sm font-bold text-slate-700 dark:text-slate-300">
+              No receipts recorded yet
+            </h3>
+            <p className="text-xs text-slate-400 mt-1 max-w-sm mx-auto">
+              Scan your first purchase receipt with OCR or quickly type in the details manually.
+            </p>
+            <div className="mt-4 flex items-center justify-center gap-2.5">
+              <button
+                onClick={() => setIsManualModalOpen(true)}
+                className="px-3.5 py-1.5 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 border border-emerald-200 dark:border-emerald-800 flex items-center gap-1.5 transition-colors"
+              >
+                <PlusCircle className="w-3.5 h-3.5 text-emerald-600" />
+                <span>+ Add Manually</span>
+              </button>
+              <button
+                onClick={() => setActivePage('upload')}
+                className="px-3.5 py-1.5 rounded-xl text-xs font-bold text-white bg-sky-600 hover:bg-sky-500 shadow-xs transition-colors flex items-center gap-1.5"
+              >
+                <Upload className="w-3.5 h-3.5" />
+                <span>Scan Receipt</span>
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="overflow-x-auto -mx-5 sm:mx-0">
+            <table className="w-full text-left border-collapse text-xs">
+              <thead>
+                <tr className="border-b border-slate-200 dark:border-slate-800 text-slate-400 dark:text-slate-500 font-semibold uppercase tracking-wider">
+                  <th className="py-3 px-4">Merchant</th>
+                  <th className="py-3 px-4">Category</th>
+                  <th className="py-3 px-4">Date</th>
+                  <th className="py-3 px-4">Amount</th>
+                  <th className="py-3 px-4">Status</th>
+                  <th className="py-3 px-4 text-right">Actions</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+                {recentReceipts.map((rcpt) => (
+                  <tr
+                    key={rcpt.id}
+                    className="hover:bg-slate-50/80 dark:hover:bg-slate-800/40 transition-colors group cursor-pointer"
+                    onClick={() => setSelectedReceiptForDetail(rcpt)}
+                  >
                   {/* Merchant & invoice */}
                   <td className="py-3.5 px-4">
                     <div className="font-bold text-slate-900 dark:text-white text-xs sm:text-sm">
@@ -764,7 +791,8 @@ export const DashboardPage: React.FC = () => {
             </tbody>
           </table>
         </div>
-      </div>
+      )}
     </div>
+  </div>
   );
 };

@@ -12,8 +12,10 @@ import {
   ChevronLeft,
   ChevronRight,
   LogOut,
+  PlusCircle,
   Lock,
 } from 'lucide-react';
+import { BrandLogo } from '../common/BrandLogo';
 
 export const Sidebar: React.FC = () => {
   const {
@@ -25,6 +27,7 @@ export const Sidebar: React.FC = () => {
     receipts,
     budget,
     setIsBudgetModalOpen,
+    setIsManualModalOpen,
   } = useApp();
 
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -104,24 +107,32 @@ export const Sidebar: React.FC = () => {
       }`}
     >
       {/* Sidebar Header Collapse Control */}
-      <div className="flex items-center justify-between p-4 border-b border-slate-100 dark:border-slate-800/80">
-        {!isCollapsed && (
-          <div className="flex items-center gap-2">
-            <span className="text-xs font-semibold uppercase tracking-wider text-slate-400 dark:text-slate-500">
-              Navigation
-            </span>
-          </div>
-        )}
+      <div className="flex items-center justify-between p-3.5 border-b border-slate-100 dark:border-slate-800/80">
+        <div className="flex items-center gap-2 overflow-hidden">
+          <BrandLogo size="sm" variant={isCollapsed ? 'icon' : 'compact'} />
+        </div>
         <button
           onClick={() => setIsCollapsed(!isCollapsed)}
           className={`p-1.5 rounded-lg text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors ${
-            isCollapsed ? 'mx-auto' : 'ml-auto'
+            isCollapsed ? 'hidden' : 'ml-auto'
           }`}
           title={isCollapsed ? 'Expand sidebar' : 'Collapse sidebar'}
         >
-          {isCollapsed ? <ChevronRight className="w-4 h-4" /> : <ChevronLeft className="w-4 h-4" />}
+          <ChevronLeft className="w-4 h-4" />
         </button>
       </div>
+
+      {isCollapsed && (
+        <div className="pt-2 flex justify-center">
+          <button
+            onClick={() => setIsCollapsed(false)}
+            className="p-1 rounded-md text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+            title="Expand sidebar"
+          >
+            <ChevronRight className="w-4 h-4" />
+          </button>
+        </div>
+      )}
 
       {/* Nav list */}
       <div className="flex-1 py-4 px-3 space-y-1.5 overflow-y-auto">
@@ -165,6 +176,20 @@ export const Sidebar: React.FC = () => {
             </button>
           );
         })}
+
+        {/* Quick Direct Manual Add Button */}
+        <div className="pt-2 mt-2 border-t border-slate-100 dark:border-slate-800/80">
+          <button
+            onClick={() => setIsManualModalOpen(true)}
+            className={`w-full flex items-center gap-2.5 px-3 py-2.5 rounded-xl text-xs font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100/80 dark:bg-emerald-950/40 dark:hover:bg-emerald-900/50 border border-emerald-200/80 dark:border-emerald-800/60 shadow-xs transition-all ${
+              isCollapsed ? 'justify-center p-2' : ''
+            }`}
+            title="Add Receipt Manually (Skip OCR)"
+          >
+            <PlusCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400 shrink-0" />
+            {!isCollapsed && <span className="truncate">Add Manually (No OCR)</span>}
+          </button>
+        </div>
       </div>
 
       {/* Mini Monthly Budget Tracker in Sidebar */}

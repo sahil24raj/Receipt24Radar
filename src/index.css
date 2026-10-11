@@ -2,30 +2,70 @@
 
 @layer base {
   :root {
-    --font-sans: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    --font-mono: 'JetBrains Mono', monospace;
+    --font-sans: 'Plus Jakarta Sans', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    --font-mono: 'JetBrains Mono', ui-monospace, SFMono-Regular, monospace;
+    
+    /* Brand Color Palette Tokens */
+    --color-brand-obsidian: #090e17;
+    --color-brand-primary: #0284c7;
+    --color-brand-primary-dark: #0369a1;
+    --color-brand-emerald: #059669;
+    --color-brand-surface: #ffffff;
+    --color-brand-subtle: #f8fafc;
   }
 
   body {
     font-family: var(--font-sans);
     min-height: 100vh;
+    background-color: #f8fafc;
+    color: #0f172a;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
   }
+
+  .dark body {
+    background-color: #090d16;
+    color: #f1f5f9;
+  }
+}
+
+/* Micro-interaction and UI density helpers */
+.saas-card {
+  border-radius: 1rem;
+  border: 1px solid rgba(226, 232, 240, 0.9);
+  background-color: #ffffff;
+  box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.03);
+  transition: all 0.15s ease-in-out;
+}
+
+.dark .saas-card {
+  border-color: rgba(30, 41, 59, 0.8);
+  background-color: #0d1322;
+  box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.3);
+}
+
+.saas-card:hover {
+  border-color: rgba(203, 213, 225, 1);
+}
+
+.dark .saas-card:hover {
+  border-color: rgba(51, 65, 85, 1);
 }
 
 /* Custom subtle scrollbar */
 ::-webkit-scrollbar {
-  width: 6px;
-  height: 6px;
+  width: 5px;
+  height: 5px;
 }
 ::-webkit-scrollbar-track {
   background: transparent;
 }
 ::-webkit-scrollbar-thumb {
-  background: rgba(148, 163, 184, 0.4);
+  background: rgba(148, 163, 184, 0.35);
   border-radius: 9999px;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background: rgba(100, 116, 139, 0.7);
+  background: rgba(100, 116, 139, 0.6);
 }
 
 /* Print styling for receipts */

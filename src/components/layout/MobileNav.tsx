@@ -59,8 +59,8 @@ export const MobileNav: React.FC = () => {
                 onClick={() => setActivePage('upload')}
                 className="flex flex-col items-center -mt-5 group"
               >
-                <div className="w-12 h-12 rounded-full bg-gradient-to-tr from-sky-600 via-cyan-600 to-teal-500 text-white flex items-center justify-center shadow-lg shadow-sky-500/30 group-active:scale-95 transition-transform">
-                  <ScanLine className="w-6 h-6" />
+                <div className="w-12 h-12 rounded-full bg-slate-900 dark:bg-sky-600 text-white flex items-center justify-center shadow-md shadow-slate-900/20 dark:shadow-sky-600/30 ring-4 ring-white dark:ring-slate-900 group-active:scale-95 transition-transform">
+                  <ScanLine className="w-5 h-5" />
                 </div>
                 <span className="text-[10px] font-semibold text-sky-600 dark:text-sky-400 mt-1">
                   {item.label}

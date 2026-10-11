@@ -274,9 +274,6 @@ export const UploadOCRPage: React.FC = () => {
             <div>
               <div className="flex items-center gap-1.5">
                 <h3 className="text-sm font-bold text-slate-900 dark:text-white">Smart OCR Scanner</h3>
-                <span className="text-[10px] font-bold px-1.5 py-0.2 rounded bg-sky-200 text-sky-800 dark:bg-sky-900 dark:text-sky-200 font-mono">
-                  AI
-                </span>
               </div>
               <p className="text-xs text-slate-500 dark:text-slate-400">
                 Extracts merchant, items, GST & totals automatically
@@ -953,7 +950,7 @@ export const UploadOCRPage: React.FC = () => {
               <button
                 type="button"
                 onClick={handleSaveToVault}
-                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-bold text-white bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-600 hover:from-sky-500 hover:to-cyan-500 shadow-md shadow-sky-500/25 active:scale-98 transition-all cursor-pointer"
+                className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 dark:bg-sky-600 dark:hover:bg-sky-500 shadow-xs active:scale-[0.98] transition-all cursor-pointer"
               >
                 <ShieldCheck className="w-5 h-5" />
                 <span>Save to Encrypted Vault</span>

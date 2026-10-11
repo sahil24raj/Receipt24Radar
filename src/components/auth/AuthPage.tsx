@@ -123,27 +123,6 @@ export const AuthPage: React.FC = () => {
 
         {/* Auth Card */}
         <div className="bg-white dark:bg-slate-900 rounded-2xl border border-slate-200/80 dark:border-slate-800 shadow-xl p-6 sm:p-8 backdrop-blur-sm">
-          {/* Supabase Status Banner */}
-          <div className="flex items-center justify-between p-2.5 mb-5 rounded-xl bg-slate-50 dark:bg-slate-800/60 border border-slate-200/60 dark:border-slate-700/60">
-            <div className="flex items-center gap-2 text-xs">
-              <Database className="w-4 h-4 text-emerald-500" />
-              <span className="font-semibold text-slate-700 dark:text-slate-300">Database:</span>
-              <span className={`text-[11px] font-bold px-2 py-0.5 rounded-full ${
-                isSupabaseConnected
-                  ? 'bg-emerald-100 dark:bg-emerald-950 text-emerald-700 dark:text-emerald-300'
-                  : 'bg-amber-100 dark:bg-amber-950 text-amber-700 dark:text-amber-300'
-              }`}>
-                {isSupabaseConnected ? 'Supabase Live' : 'Local / Demo'}
-              </span>
-            </div>
-            <button
-              type="button"
-              onClick={() => setIsSupabaseModalOpen(true)}
-              className="text-xs font-semibold text-sky-600 hover:text-sky-700 dark:text-sky-400 hover:underline"
-            >
-              {isSupabaseConnected ? 'Settings' : 'Connect Cloud'}
-            </button>
-          </div>
 
           {/* Mode Switcher Tabs */}
           <div className="flex rounded-xl bg-slate-100 dark:bg-slate-800 p-1 mb-6 text-xs font-semibold">
@@ -331,7 +310,7 @@ export const AuthPage: React.FC = () => {
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-600 hover:from-sky-500 hover:to-cyan-500 shadow-md shadow-sky-500/20 active:scale-98 transition-all disabled:opacity-70 cursor-pointer"
+              className="w-full flex items-center justify-center gap-2 py-3 px-4 rounded-xl text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 dark:bg-sky-600 dark:hover:bg-sky-500 shadow-xs active:scale-[0.98] transition-all disabled:opacity-70 cursor-pointer"
             >
               {isLoading ? (
                 <span>Securing Vault Access...</span>
@@ -413,6 +392,19 @@ export const AuthPage: React.FC = () => {
                 <p className="text-[11px] mt-0.5 leading-relaxed text-slate-500 dark:text-slate-400">
                   All documents are stored with client-side AES-256 encryption. Immutable SHA-256 integrity checksums guarantee tamper resistance.
                 </p>
+                <div className="mt-2.5 pt-2 border-t border-slate-100 dark:border-slate-800/80 flex items-center justify-between text-[11px]">
+                  <span className="flex items-center gap-1.5 text-slate-500 dark:text-slate-400">
+                    <span className={`w-1.5 h-1.5 rounded-full ${isSupabaseConnected ? 'bg-emerald-500' : 'bg-amber-500'}`} />
+                    {isSupabaseConnected ? 'Supabase Connected' : 'Local Sandbox Mode'}
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setIsSupabaseModalOpen(true)}
+                    className="text-sky-600 hover:text-sky-700 dark:text-sky-400 font-medium hover:underline"
+                  >
+                    Configure Cloud
+                  </button>
+                </div>
               </div>
             </div>
           </div>

@@ -458,7 +458,7 @@ export const SetBudgetModal: React.FC = () => {
           <button
             type="button"
             onClick={handleSave}
-            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-bold text-white bg-gradient-to-r from-sky-600 via-cyan-600 to-teal-600 hover:from-sky-500 hover:to-cyan-500 shadow-md shadow-sky-500/20 active:scale-98 transition-all"
+            className="flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold text-white bg-slate-900 hover:bg-slate-800 dark:bg-sky-600 dark:hover:bg-sky-500 shadow-xs active:scale-[0.98] transition-all"
           >
             <CheckCircle2 className="w-4 h-4" />
             <span>Save Monthly Budget</span>

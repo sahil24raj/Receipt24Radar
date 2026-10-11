@@ -251,16 +251,16 @@ export const ReceiptVaultPage: React.FC = () => {
 
           <button
             onClick={() => setIsManualModalOpen(true)}
-            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-emerald-700 dark:text-emerald-300 bg-emerald-50 hover:bg-emerald-100 dark:bg-emerald-950/60 dark:hover:bg-emerald-900/60 border border-emerald-200 dark:border-emerald-800 shadow-xs transition-all"
-            title="Add Receipt Manually without OCR scanning"
+            className="flex items-center gap-1.5 px-3 py-2 rounded-xl text-xs sm:text-sm font-semibold text-slate-700 dark:text-slate-200 bg-white dark:bg-slate-800 hover:bg-slate-50 dark:hover:bg-slate-700 border border-slate-200 dark:border-slate-700 shadow-xs transition-all"
+            title="Add Receipt Manually"
           >
-            <PlusCircle className="w-4 h-4 text-emerald-600 dark:text-emerald-400" />
-            <span>+ Add Manually</span>
+            <PlusCircle className="w-4 h-4 text-slate-500 dark:text-slate-400" />
+            <span>Manual Entry</span>
           </button>
 
           <button
             onClick={() => setActivePage('upload')}
-            className="flex items-center gap-1.5 px-4 py-2 rounded-xl text-xs sm:text-sm font-bold text-white bg-gradient-to-r from-sky-600 to-cyan-600 hover:from-sky-500 hover:to-cyan-500 shadow-md shadow-sky-500/20 active:scale-95 transition-all"
+            className="flex items-center gap-1.5 px-3.5 py-2 rounded-xl text-xs sm:text-sm font-semibold text-white bg-slate-900 hover:bg-slate-800 dark:bg-sky-600 dark:hover:bg-sky-500 shadow-xs active:scale-[0.98] transition-all"
           >
             <UploadCloud className="w-4 h-4" />
             <span>Scan Receipt</span>

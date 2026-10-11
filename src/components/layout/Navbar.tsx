@@ -9,11 +9,13 @@ import {
   Database,
   Bell,
   Search,
+  LogOut,
 } from 'lucide-react';
 
 export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = () => {
   const {
     user,
+    logout,
     theme,
     toggleTheme,
     setActivePage,
@@ -143,19 +145,33 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = () => {
           {theme === 'light' ? <Moon className="w-5 h-5" /> : <Sun className="w-5 h-5 text-amber-400" />}
         </button>
 
-        {/* User Avatar */}
+        {/* User Avatar & Logout */}
         {user && (
-          <div
-            onClick={() => setActivePage('dashboard')}
-            className="flex items-center gap-2 pl-2 cursor-pointer border-l border-slate-200 dark:border-slate-800"
-          >
-            <div className="w-8 h-8 rounded-full overflow-hidden border border-sky-500/40 shadow-sm ring-2 ring-sky-500/10">
-              <img
-                src={user.avatarUrl}
-                alt={user.name}
-                className="w-full h-full object-cover"
-              />
+          <div className="flex items-center gap-2 pl-2 border-l border-slate-200 dark:border-slate-800">
+            <div
+              onClick={() => setActivePage('dashboard')}
+              className="flex items-center gap-2 cursor-pointer"
+              title={`Logged in as ${user.email || user.name}`}
+            >
+              <div className="w-8 h-8 rounded-full overflow-hidden border border-sky-500/40 shadow-sm ring-2 ring-sky-500/10">
+                <img
+                  src={user.avatarUrl || `https://api.dicebear.com/7.x/initials/svg?seed=${user.name}`}
+                  alt={user.name}
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              <span className="hidden xl:inline text-xs font-semibold text-slate-700 dark:text-slate-300 max-w-[120px] truncate">
+                {user.name}
+              </span>
             </div>
+
+            <button
+              onClick={logout}
+              className="p-1.5 rounded-lg text-slate-400 hover:text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-950/40 transition-colors"
+              title="Sign Out"
+            >
+              <LogOut className="w-4 h-4" />
+            </button>
           </div>
         )}
       </div>

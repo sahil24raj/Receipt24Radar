@@ -48,6 +48,7 @@ interface AppContextType {
   isAuthenticated: boolean;
   login: (email: string, pass: string) => Promise<boolean>;
   demoLogin: () => void;
+  loginWithGoogle: () => Promise<void>;
   register: (name: string, email: string, pass: string) => Promise<boolean>;
   logout: () => void;
 
@@ -98,11 +99,12 @@ const AppContext = createContext<AppContextType | undefined>(undefined);
 
 export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(() => {
+    const isAuth = localStorage.getItem('receipt_radar_auth') === 'true';
     const saved = localStorage.getItem('receipt_radar_user');
-    return saved ? JSON.parse(saved) : mockUser;
+    return isAuth && saved ? JSON.parse(saved) : null;
   });
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(() => {
-    return localStorage.getItem('receipt_radar_auth') !== 'false';
+    return localStorage.getItem('receipt_radar_auth') === 'true';
   });
 
   const [receipts, setReceipts] = useState<Receipt[]>(() => {
@@ -238,6 +240,14 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
             if (cloudBudget) setBudget(cloudBudget);
           })
           .catch((err) => console.warn('Supabase fetch budget notice:', err));
+      } else {
+        const isDemo = localStorage.getItem('receipt_radar_is_demo') === 'true';
+        if (!isDemo) {
+          setUser(null);
+          setIsAuthenticated(false);
+          localStorage.setItem('receipt_radar_auth', 'false');
+          localStorage.removeItem('receipt_radar_user');
+        }
       }
     });
 
@@ -363,11 +373,36 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setIsAuthenticated(true);
     localStorage.setItem('receipt_radar_user', JSON.stringify(mockUser));
     localStorage.setItem('receipt_radar_auth', 'true');
+    localStorage.setItem('receipt_radar_is_demo', 'true');
     showToast({
       type: 'success',
       title: 'Demo Session Active',
       message: 'Logged in as Sahil Verma with verified telemetry.',
     });
+  };
+
+  const loginWithGoogle = async () => {
+    if (!isSupabaseConfigured()) {
+      showToast({
+        type: 'error',
+        title: 'Supabase Not Connected',
+        message: 'Please connect your Supabase project URL and Key to use Google OAuth.',
+      });
+      return;
+    }
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: {
+        redirectTo: window.location.origin,
+      },
+    });
+    if (error) {
+      showToast({
+        type: 'error',
+        title: 'Google Sign-In Error',
+        message: error.message,
+      });
+    }
   };
 
   const register = async (name: string, email: string, pass: string): Promise<boolean> => {
@@ -444,6 +479,8 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
     setUser(null);
     setIsAuthenticated(false);
     localStorage.setItem('receipt_radar_auth', 'false');
+    localStorage.removeItem('receipt_radar_user');
+    localStorage.removeItem('receipt_radar_is_demo');
     showToast({
       type: 'info',
       title: 'Signed Out',
@@ -653,6 +690,7 @@ export const AppProvider: React.FC<{ children: React.ReactNode }> = ({ children 
         isAuthenticated,
         login,
         demoLogin,
+        loginWithGoogle,
         register,
         logout,
         receipts,

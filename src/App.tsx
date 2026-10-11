@@ -14,15 +14,20 @@ import { ArchitectureModal } from './components/architecture/ArchitectureModal';
 import { ReceiptDetailModal } from './components/vault/ReceiptDetailModal';
 import { ManualExpenseModal } from './components/upload/ManualExpenseModal';
 import { SetBudgetModal } from './components/budget/SetBudgetModal';
+import { SupabaseConfigModal } from './components/supabase/SupabaseConfigModal';
 import { ToastContainer } from './components/ui/ToastContainer';
 
 const MainAppContent: React.FC = () => {
-  const { isAuthenticated, activePage } = useApp();
+  const { isAuthenticated, activePage, isSupabaseModalOpen, setIsSupabaseModalOpen } = useApp();
 
   if (!isAuthenticated) {
     return (
       <>
         <AuthPage />
+        <SupabaseConfigModal
+          isOpen={isSupabaseModalOpen}
+          onClose={() => setIsSupabaseModalOpen(false)}
+        />
         <ToastContainer />
       </>
     );
@@ -71,6 +76,10 @@ const MainAppContent: React.FC = () => {
       <ReceiptDetailModal />
       <ManualExpenseModal />
       <SetBudgetModal />
+      <SupabaseConfigModal
+        isOpen={isSupabaseModalOpen}
+        onClose={() => setIsSupabaseModalOpen(false)}
+      />
       <ToastContainer />
     </div>
   );

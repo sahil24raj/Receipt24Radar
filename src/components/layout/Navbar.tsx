@@ -20,6 +20,8 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = () => {
     setIsManualModalOpen,
     duplicateAlert,
     receipts,
+    isSupabaseConnected,
+    setIsSupabaseModalOpen,
   } = useApp();
 
   // Count expiring warranties within 30 days
@@ -72,6 +74,21 @@ export const Navbar: React.FC<{ onOpenMobileMenu?: () => void }> = () => {
 
       {/* Right actions */}
       <div className="flex items-center gap-2 sm:gap-3">
+        {/* Supabase Cloud Connection Status button */}
+        <button
+          onClick={() => setIsSupabaseModalOpen(true)}
+          className={`flex items-center gap-1.5 px-2.5 py-1.5 rounded-lg text-xs font-semibold border transition-all ${
+            isSupabaseConnected
+              ? 'bg-emerald-50 text-emerald-700 border-emerald-200 dark:bg-emerald-950/60 dark:text-emerald-300 dark:border-emerald-800'
+              : 'bg-amber-50 text-amber-700 border-amber-200 dark:bg-amber-950/60 dark:text-amber-300 dark:border-amber-800'
+          }`}
+          title="Supabase PostgreSQL & Auth Configuration"
+        >
+          <span className={`w-2 h-2 rounded-full ${isSupabaseConnected ? 'bg-emerald-500 animate-pulse' : 'bg-amber-500'}`} />
+          <span className="hidden sm:inline">Supabase</span>
+          <span className="text-[10px] opacity-80">{isSupabaseConnected ? 'Live' : 'Config'}</span>
+        </button>
+
         {/* PostgreSQL Schema viewer button */}
         <button
           onClick={() => setActivePage('architecture')}

@@ -185,10 +185,11 @@ graph TD
 ## 💻 Tech Stack
 
 - **Frontend & UI:** React 19, TypeScript, Vite, Tailwind CSS v4, Lucide React Icons
+- **Backend & Database (BaaS):** Supabase (PostgreSQL 16+, Supabase Auth, Row Level Security, Storage Buckets)
 - **Data Visualization:** Recharts (Area charts, Bar graphs, Donut pie charts)
 - **Computer Vision & OCR:** Tesseract.js engine with adaptive pre-processing heuristics
 - **Relational Database (DBMS):** PostgreSQL 16+ / Azure SQL Database
-- **Cloud Infrastructure:** Microsoft Azure / AWS (Blob Storage, Key Vault, Event Grid, Synapse Analytics)
+- **Cloud Infrastructure:** Supabase / Microsoft Azure / AWS (Blob Storage, Key Vault, Event Grid, Synapse Analytics)
 - **Cryptography & Security:** SHA-256 Web Crypto API, Argon2id, Row Level Security (RLS)
 - **Code Quality & Build:** Vite 8, Oxlint, TypeScript strict mode
 
@@ -199,10 +200,12 @@ graph TD
 ```text
 Receipt-Radar/
 ├── docs/                                  # 📚 Academic & Architectural Documentation
+│   ├── SUPABASE_SETUP.sql                 # 1-Click Supabase PostgreSQL Schema & RLS Setup
 │   ├── DATABASE_SCHEMA.sql                # Complete PostgreSQL 16+ DDL, RLS & Indexes
 │   ├── SYSTEM_DESIGN.md                   # HLD, LLD, Ingestion Flow & Security Specs
 │   ├── DP900_AZURE_ARCHITECTURE.md        # Microsoft DP-900 Cloud Data Alignment
 │   └── VIVA_PRESENTATION_GUIDE.md         # 15 College Viva Exam Questions & Model Answers
+├── .env.example                           # Supabase environment variables template
 ├── public/                                # Public Static Assets
 ├── src/
 │   ├── assets/                            # Brand Logos & Visual Graphics
@@ -213,6 +216,7 @@ Receipt-Radar/
 │   │   ├── budget/                        # Monthly Budget Allocation & Alert Modals
 │   │   ├── dashboard/                     # Financial Overview & Metrics Hub
 │   │   ├── layout/                        # Responsive Navbar, Sidebar & Mobile Nav
+│   │   ├── supabase/                      # Live Supabase Connection Modal
 │   │   ├── ui/                            # Reusable UI elements (Toasts, Badges)
 │   │   ├── upload/                        # OCR File Dropzone & Manual Entry Modal
 │   │   ├── vault/                         # Digital Receipt Archive & Detail Modal
@@ -220,9 +224,12 @@ Receipt-Radar/
 │   ├── context/                           # AppContext & Global State Management
 │   ├── data/                              # Seed Datasets & Mock Configurations
 │   ├── lib/                               # Utility Helpers & Cryptographic Routines
+│   │   ├── supabase.ts                    # Supabase Client & Dynamic Auth Config
+│   │   └── utils.ts                       # Formatters & SHA-256 Hasher
 │   ├── services/
 │   │   ├── dbSchema.ts                    # PostgreSQL Schema DDL string definition
-│   │   └── ocrService.ts                  # Tesseract OCR & Heuristic Parser Engine
+│   │   ├── ocrService.ts                  # Tesseract OCR & Heuristic Parser Engine
+│   │   └── supabaseService.ts             # Supabase Database CRUD Service
 │   ├── types/                             # Strict TypeScript Interfaces & Domain Models
 │   ├── App.tsx                            # Root Application Component
 │   ├── index.css                          # Tailwind CSS v4 Directives & Theme
@@ -255,13 +262,26 @@ Receipt-Radar/
    npm install
    ```
 
-3. **Start the development server:**
+3. **Configure Supabase (Optional for Live Cloud Mode, or use Instant Local Demo):**
+   - Copy `.env.example` to `.env`:
+     ```bash
+     cp .env.example .env
+     ```
+   - Add your Supabase project credentials from [supabase.com/dashboard](https://supabase.com/dashboard) (Project Settings → API):
+     ```env
+     VITE_SUPABASE_URL=https://your-project-id.supabase.co
+     VITE_SUPABASE_ANON_KEY=your-anon-public-key
+     ```
+   - In your Supabase SQL Editor, paste and run [`docs/SUPABASE_SETUP.sql`](docs/SUPABASE_SETUP.sql) to create the tables, RLS policies, and storage bucket.
+   - *Tip:* You can also click the **"Supabase"** button in the app navbar to configure keys interactively without touching `.env`!
+
+4. **Start the development server:**
    ```bash
    npm run dev
    ```
    Open your browser at `http://localhost:5173` to explore Receipt Radar.
 
-4. **Build for production:**
+5. **Build for production:**
    ```bash
    npm run build
    ```
